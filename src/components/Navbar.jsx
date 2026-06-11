@@ -3,9 +3,9 @@ import {Link} from "react-router-dom";
 function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
-            <div className="container">
+            <div className="container-fluid px-4">
 
-                <Link className="navbar-brand fw-bold" to="/">
+                <Link className="navbar-brand fw-bold fs-4" to="/">
                     🌿 الشروق للخضار والفواكه
                 </Link>
 
@@ -19,7 +19,7 @@ function Navbar() {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav me-auto">
+                    <ul className="navbar-nav me-auto fw-bold fs-4">
                         <li className="nav-item">
                             <Link className="nav-link" to="/">
                                 الرئيسية

@@ -1,5 +1,5 @@
 function Checkout() {
-    return <h1>Checkout</h1>
+    return <h1>الطلب</h1>
 }
 
 export default Checkout;

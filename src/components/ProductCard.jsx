@@ -1,4 +1,8 @@
+import {useContext} from "react";
+import {CartContext} from "../context/cart-context";
+
 function ProductCard({product}) {
+    const {addToCart} = useContext(CartContext);
     return (
         <div className="card border-0 shadow-sm h-100">
             <div className="text-center py-4 fs-1">
@@ -16,7 +20,9 @@ function ProductCard({product}) {
                 <h6 className="text-success fw-bold mb-3">
                     {product.price} ₪
                 </h6>
-                <button className="btn btn-success w-100">
+                <button className="btn btn-success w-100"
+                        onClick={() => addToCart(product)}
+                >
                     أضف الى السلة
                 </button>
             </div>

@@ -8,17 +8,72 @@ function CartProvider({children}) {
     });
 
     const addToCart = (product) => {
-        const updatedCart = [...cartItems, product];
+        const existingItem = cartItems.find(
+            (item) => item.id === product.id 
+        );
+
+        let updatedCart;
+        if(existingItem) {
+            updatedCart = cartItems.map((item) =>
+            item.id === product.id 
+            ? {...item, quantity: item.quantity + 1}
+            : item
+        );
+        } else {
+            updatedCart = [...cartItems, {...product, quantity: 1},
+            ];
+            }
+
+            setCartItems(updatedCart);
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+    };
+
+    const removeFromCart = (productId) => {
+        const updatedCart = cartItems.filter(
+            (item) => item.id !== productId  
+        );
+
         setCartItems(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart)
-    );
+        localStorage.setItem("cart",JSON.stringify(updatedCart));
+    };
+
+    const increaseQuantity = (productId) => {
+        const updatedCart = cartItems.map((item) =>
+            item.id === productId
+                ?{...item, quantity: item.quantity + 1}
+                : item
+        );
+        setCartItems(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+    };
+
+    const decreaseQuantity = (productId) => {
+        const updatedCart = cartItems
+            .map((item) =>
+                    item.id === productId
+                        ? {...item, quantity: item.quantity - 1}
+                        : item
+            )
+            .filter((item) => item.quantity > 0);
+
+            setCartItems(updatedCart);
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+    };
+
+    const clearCart = () => {
+        setCartItems([]);
+        localStorage.removeItem("cart");
     };
 
     return (
         <CartContext.Provider 
                 value={{
                     cartItems,
-                    addToCart
+                    addToCart,
+                    removeFromCart,
+                    increaseQuantity,
+                    decreaseQuantity,
+                    clearCart,
                 }}
         >
             {children}

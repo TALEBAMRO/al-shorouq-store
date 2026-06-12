@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {  Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayouts";
 
 import Home from "./pages/Home";
@@ -10,11 +10,10 @@ import NotFound from "./pages/NotFound";
 
 import Dashboard from "./admin/Dashboard";
 import ProductsManagement from "./admin/ProductsManagement";
-import OrdersManagement from "./admin/ProductsManagement";
+import OrdersManagement from "./admin/OrdersManagement";
 
 function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
@@ -28,7 +27,6 @@ function App() {
           <Route path="/admin/orders" element={<OrdersManagement />} />
           <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
   );
 }
 

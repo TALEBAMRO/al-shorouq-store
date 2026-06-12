@@ -1,16 +1,100 @@
-# React + Vite
+# 🌿 Al-Shorouq Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An online fruit and vegetable store built with **React** and **Vite**. The project provides a complete shopping experience, including browsing products, managing a shopping cart, placing orders, and viewing order history.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Customer Features
 
-## React Compiler
+* Browse fruits and vegetables.
+* Search for products.
+* Filter products by category.
+* Add products to the shopping cart.
+* Update product quantities.
+* Remove products from the cart.
+* Calculate the total price automatically.
+* Checkout with customer information.
+* Cash on delivery payment option.
+* Place orders successfully.
+* View previous orders.
+* Order status tracking.
+* Responsive design for different screen sizes.
+* Arabic RTL support.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Technical Features
 
-## Expanding the ESLint configuration
+* React + Vite.
+* React Router for navigation.
+* Bootstrap for styling.
+* Context API for cart state management.
+* Local Storage for data persistence.
+* Reusable components architecture.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Technologies Used
+
+* React
+* Vite
+* Bootstrap 5
+* React Router DOM
+* Context API
+* Local Storage
+
+## 📸 Screenshots
+
+Screenshots of the application will be added soon.
+
+## 📂 Project Structure
+
+```text
+src/
+├── admin/
+├── components/
+├── context/
+├── data/
+├── layouts/
+├── pages/
+├── App.jsx
+└── main.jsx
+```
+
+## ▶️ Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+```
+
+Navigate to the project folder:
+
+```bash
+cd YOUR_REPOSITORY
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+## 🔮 Future Improvements
+
+* Admin dashboard.
+* Product management system.
+* Order management system.
+* User authentication.
+* Customer accounts.
+* Multiple payment methods.
+* Backend integration.
+
+## 👨‍💻 Author
+
+**Taleb Amro**
+
+Computer Engineering Student 

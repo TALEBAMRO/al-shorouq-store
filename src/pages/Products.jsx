@@ -1,8 +1,9 @@
 import {useState} from "react";
-import products from "../data/products";
 import ProductCard from "../components/ProductCard";
 
 function Products() {
+        const products = JSON.parse(localStorage.getItem("products")) || [];
+
         const [searchTerm, setSearchTerm] = useState("");
         const [selectedCategory, setSelectedCategory] = useState("الكل");
 

@@ -19,7 +19,7 @@ function Orders() {
                         <div key={order.id}
                         className="col-12 col-md-6 col-xl-4"
                     >
-                        <div className="card shadow-sm border-0">
+                        <div className="card shadow-sm border-0 h-100">
                             <div className="card-body">
                                 <div className="d-flex justify-content-between align-items-center flex-wrap mb-3">
                                     <div>
@@ -68,16 +68,14 @@ function Orders() {
                                 <h6 className="fw-bold mb-3">
                                     المنتجات:
                                 </h6>
-                                <div className="row g-2">
+                                <div className="d-flex flex-column gap-2">
                                 {order.items.map((item) => (
                                     <div 
                                         key={item.id}
-                                        className="d-flex justify-content-between mb-2"
+                                        className="bg-light rounded p-2 d-flex justify-content-between align-items-center"
                                     >
-                                        <div className="bg-light rounded p-2 d-flex justify-content-between align-items-center">
                                         <span>{item.image} {item.name}</span>
                                         <span className="badge bg-success">× {item.quantity}</span>
-                                    </div>
                                     </div>
                                 ))}
                                 </div>

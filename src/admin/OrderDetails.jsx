@@ -59,6 +59,12 @@ function OrderDetails() {
         navigate("/admin/orders");
     };
 
+    const statusColor = {
+        "قيد المعالجة" : "warning",
+        "تم الشحن" : "primary",
+        "تم التسليم" : "success",
+    };
+
     return (
         <div className="container py-5">
 
@@ -107,28 +113,58 @@ function OrderDetails() {
             </div>
 
             {/* Order Items */}
-            <div className="card shadow-sm border-0 mb-4">
-                <div className="card-body">
-                    <h5 className="fw-bold mb-4">
-                        <strong>الطلب</strong>
-                    </h5>
+<div className="card shadow-sm border-0 mb-4">
+    <div className="card-body">
+        <h5 className="fw-bold mb-4">
+            Products
+        </h5>
 
-                    {order.items.map((item) => (
-                        <div
-                            key={item.id}
-                            className="d-flex justify-content-between align-items-center border rounded p-3 mb-2"
-                        >
-                            <div>
-                                {item.image} {item.name}
-                            </div>
+        <div className="table-responsive">
+            <table className="table align-middle">
+                <thead className="table-light">
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
 
-                            <span className="badge bg-success">
-                                Qty: {item.quantity}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
+                <tbody>
+                    {order.items.map((item) => { 
+                        console.log(item);
+                        return ( 
+                        <tr key={item.id}>
+                            <td>
+                                <span style={{fontSize: "2rem"}}>
+                                    {item.image}
+                                </span>
+                            </td>
+
+                            <td>{item.name}</td>
+
+                            <td>
+                                {item.price}₪
+                            </td>
+
+                            <td>
+                                <span className="badge bg-success">
+                                    {item.quantity}
+                                </span>
+                            </td>
+
+                            <td>
+                                {item.price * item.quantity}₪
+                            </td>
+                        </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
             {/* Payment Information */}
             <div className="card shadow-sm border-0 mb-4">
@@ -140,6 +176,11 @@ function OrderDetails() {
                     <p>
                         <strong>طريقة الدفع:</strong>{" "}
                         {order.paymentMethod}
+                    </p>
+
+                    <p>
+                        <strong>عدد المنتجات:</strong>
+                        {order.items.length}
                     </p>
 
                     <p className="mb-0">
@@ -155,6 +196,12 @@ function OrderDetails() {
                     <h5 className="fw-bold mb-4">
                         حالة الطلب:
                     </h5>
+
+                    <div className="mb-3">
+                        <span className={`badge bg-${statusColor[status]} fs-6`}>
+                            {status}
+                        </span>
+                    </div>
 
                     <select
                         className="form-select mb-4"

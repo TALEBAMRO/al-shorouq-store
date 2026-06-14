@@ -25,6 +25,12 @@ function OrdersManagement() {
         );
     };
 
+    const statusColor = {
+        "قيد المعالجة" : "warning",
+        "تم الشحن" : "primary",
+        "تم التسليم" : "success",
+    };
+
     return (
         <div className="container py-5">
             <h1 className="fw-bold mb-5">
@@ -64,7 +70,9 @@ function OrdersManagement() {
                                     </td>
 
                                     <td>
-                                        <span className="badge bg-warning text-dark">
+                                        <span
+                                            className={`badge bg-${statusColor[order.status]} fs-6`}
+                                        >
                                             {order.status}
                                         </span>
                                     </td>

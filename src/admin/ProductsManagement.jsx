@@ -40,7 +40,9 @@ function ProductsManagement() {
 
             <div className="card shadow-sm border-0">
                 <div className="table-responsive">
-                    <table className="table table-hover align-middle mb-0 text-start">
+                    <table className="table table-hover align-middle mb-0 text-start"
+                            dir="ltr"
+                    >
                         <thead className="table-light">
                             <tr>
                                 <th>ID</th>
@@ -61,20 +63,20 @@ function ProductsManagement() {
                                     </td>
                                     <td>{product.name}</td>
                                     <td>{product.category}</td>
-                                    <td>₪ {product.price}</td>
-                                    <td className=" d-flex gap-2 align-items-end">
-                                        <button 
-                                            className="btn btn-danger btn-sm"
-                                            onClick={() => handleDelete(product.id)}
-                                        >
-                                            Delete
-                                        </button>
-                                        <Link
-                                            to={`/admin/products/edit/${product.id}`}
-                                            className="btn btn-warning btn-sm"
-                                        >
-                                            Edit
-                                        </Link>
+                                    <td className="text-center">₪ {product.price}</td>
+                                    <td>
+                                        <div className="d-flex gap-2 justify-content-center">
+                                            <Link 
+                                                to={`/admin/products/edit/${product.id}`}
+                                                className="btn btn-warning btn-sm">
+                                                    Edit
+                                            </Link>
+                                            <button 
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDelete(product.id)}>
+                                                    Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

@@ -10,7 +10,6 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
-import AdminDashboard from "./pages/AdminDashboard";
 /*admin*/
 import Dashboard from "./admin/Dashboard";
 import ProductsManagement from "./admin/ProductsManagement";
@@ -38,7 +37,6 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="orders" element={<Orders />} />
-          <Route path="/admin" element={<AdminDashboard />} />
         </Route>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/products" element={<ProductsManagement />} />

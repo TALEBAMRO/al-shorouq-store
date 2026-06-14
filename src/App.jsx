@@ -17,6 +17,9 @@ import OrdersManagement from "./admin/OrdersManagement";
 import EditProduct from "./admin/EditProduct";
 import AddProduct from "./admin/AddProduct";
 import OrderDetails from "./admin/OrderDetails";
+import AdminLogin from "./admin/AdminLogin";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminLayout from "./layouts/AdminLayout";
 
 function App() {
 
@@ -37,14 +40,18 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
+        
+          <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/products" element={<ProductsManagement />} />
           <Route path="/admin/orders" element={<OrdersManagement />} />
           <Route path="/admin/products/edit/:id" element={<EditProduct />} />
           <Route path="/admin/products/add" element={<AddProduct />} />
           <Route path="/admin/orders/:id" element={<OrderDetails />} />
-          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
   );
 }

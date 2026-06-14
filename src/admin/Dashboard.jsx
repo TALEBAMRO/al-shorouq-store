@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
     const products = 
@@ -12,6 +13,13 @@ function AdminDashboard() {
         0
     );
 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("isAdmin");
+
+        navigate("/admin/login");
+    }
+
     const pendingOrders = orders.filter(
         (order) => order.status === "قيد المعالجة"
     ).length;
@@ -22,9 +30,18 @@ function AdminDashboard() {
 
     return (
         <div className="container py-5">
-            <h1 className="fw-bold mb-5">
-                Admin Dashboard 
-            </h1>
+            <div className="d-flex justify-content-between align-items-center mb-5">
+                <h1 className="fw-bold mb-0">
+                    Admin Dashboard 
+                </h1>
+
+                <button 
+                    className="btn btn-outline-danger"
+                    onClick={handleLogout}
+                >
+                    Logout
+                </button>
+            </div>
 
             <div className="row g-4">
 

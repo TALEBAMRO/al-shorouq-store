@@ -6,13 +6,15 @@ function AdminLogin() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if(
-            email === "admin@alshorouq.com" && 
-            password ==="123456"
+        if (
+            email === "admin@alshorouq.com" &&
+            password === "123456"
         ) {
             localStorage.setItem("isAdmin", "true");
             navigate("/admin");
@@ -21,120 +23,147 @@ function AdminLogin() {
         }
     };
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
-
     return (
         <div className="container-fluid min-vh-100">
             <div className="row min-vh-100">
 
-                {/* Left Side */}
+                {/* Branding Side */}
                 <div className="col-lg-5 d-none d-lg-flex flex-column justify-content-center align-items-center bg-success text-white p-5">
-                    <h1 className="display-4 fw-bold mb-3">
-                        🥬 Al-Shorouq Store
+
+                    <h1 className="display-3 fw-bold text-center mb-4">
+                        Al-Shorouq Store🥬
                     </h1>
 
-                    <p className="fs-4 text-center">
+                    <p className="fs-3 text-center mb-4">
                         Fresh • Healthy • Delivered
                     </p>
 
-                    <p className="text-center mt-4 opacity-75">
+                    <p className="text-center opacity-75 fs-5">
                         Manage your store efficiently and keep everything under control.
                     </p>
+
                 </div>
 
-                {/* Left Side */}
-                <div className="col-lg-7 d-flex justify-content-center align-items-center">
-                    <div 
-                        className="card shadow border-0 p-4"
+                {/* Login Side */}
+                <div className="col-lg-7 d-flex justify-content-center align-items-center bg-light">
+
+                    <div
+                        className="card border-0 p-4"
                         style={{
                             width: "100%",
                             maxWidth: "500px",
-                            borderRadius: "20px",
+                            borderRadius: "24px",
+                            boxShadow: "0 20px 50px rgba(0,0,0,0.12)",
                         }}
-                        >
-                            <div className="card-body">
-                                <h2 className="fw-bold mb-2">
+                    >
+                        <div className="card-body">
+
+                            <div className="text-center mb-4">
+                                <h2 className="fw-bold">
                                     Welcome Back 👋
                                 </h2>
 
-                                <p className="text-muted mb-4">
+                                <p className="text-muted">
                                     Sign in to access the admin dashboard.
                                 </p>
+                            </div>
 
-                                <form onSubmit={handleSubmit}>
-                                    <div className="mb-3">
-                                        <label className="form-label">
-                                            Email 
-                                        </label>
+                            <form onSubmit={handleSubmit}>
+
+                                {/* Email */}
+                                <div className="mb-3">
+                                    <label className="form-label fw-semibold">
+                                        Email
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        className="form-control py-2"
+                                        placeholder="Enter admin email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                {/* Password */}
+                                <div className="mb-3">
+                                    <label className="form-label fw-semibold">
+                                        Password
+                                    </label>
+
+                                    <div className="position-relative">
 
                                         <input
-                                            type="email"
-                                            className="form-control"
-                                            placeholder="admin mail"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            className="form-control py-2 pe-5"
+                                            placeholder="Enter password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             required
                                         />
-                                    </div>
 
-                                    <div className="mb-3">
-                                        <label className="form-label">
-                                            Password 
-                                        </label>
-                                        <div className="input-group">
-                                            <input
-                                                type={
-                                                    showPassword
-                                                        ? "text"
-                                                        : "password"
-                                                }
-                                                className="form-control"
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                required
-                                            />
-
-                                            <button 
-                                                type="button"
-                                                className="btn btn-outline-secondary"
-                                                onClick={() => setShowPassword(!showPassword)}
-                                            >
-                                                {showPassword ? "🙈" : "👁️"}
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className="form-check mb-4">
-                                        <input 
-                                            type="checkbox"
-                                            className="form-check-input"
-                                            checked={rememberMe}
-                                            onChange={(e) => setRememberMe(e.target.checked)}
-                                        />
-
-                                        <label className="form-check-label">
-                                            Remember Me
-                                        </label>
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        className="btn btn-success w-100 py-2">
-                                            Login
+                                        <button
+                                            type="button"
+                                            className="btn position-absolute top-50 end-0 translate-middle-y border-0"
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                        >
+                                            {showPassword ? "🙈" : "👁️"}
                                         </button>
 
-                                        <Link
-                                            to="/"
-                                            className="btn btn-outline-secondary w-100 mt-3">
-                                                ← Back to Store
-                                            </Link>
-                                </form>
-                            </div>
+                                    </div>
+                                </div>
+
+                                {/* Remember Me */}
+                                <div className="form-check mb-4">
+                                    <input
+                                        id="remember"
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        checked={rememberMe}
+                                        onChange={(e) => setRememberMe(e.target.checked)}
+                                    />
+
+                                    <label
+                                        htmlFor="remember"
+                                        className="form-check-label ms-2"
+                                    >
+                                        Remember Me
+                                    </label>
+                                </div>
+
+                                {/* Login Button */}
+                                <button
+                                    type="submit"
+                                    className="btn btn-success w-100 py-3 fw-semibold"
+                                >
+                                    Login
+                                </button>
+
+                                {/* Back Button */}
+                                <Link
+                                    to="/"
+                                    className="btn btn-outline-secondary w-100 mt-3 py-3"
+                                >
+                                    ← Back to Store
+                                </Link>
+
+                            </form>
+
                         </div>
+                    </div>
+
                 </div>
+
             </div>
         </div>
-    )
+    );
 }
 
 export default AdminLogin;

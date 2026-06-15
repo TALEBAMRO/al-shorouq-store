@@ -1,5 +1,5 @@
-import {Link} from "react-router-dom";
-import {useContext} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { CartContext } from "../context/cart-context";
 
 function Navbar() {
@@ -8,6 +8,16 @@ function Navbar() {
     const cartCount = cartItems.reduce(
         (total,item) => total + item.quantity, 0
     );
+
+    const navigate = useNavigate();
+    const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer")
+    );
+
+    const handleLogout = () => {
+        localStorage.removeItem("currentCustomer");
+        navigate("/");
+        window.location.reload();
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
@@ -57,7 +67,36 @@ function Navbar() {
                                 طلباتي
                             </Link>
                         </li>
-
+                            {currentCustomer ? (
+                                <>
+                                    <li className="nav-item">
+                                        <button
+                                            className="btn btn-link nav-link"
+                                            onClick={handleLogout}
+                                        >
+                                            تسجيل الخروج
+                                        </button>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link 
+                                            className="nav-link"
+                                            to="/profile"
+                                            >
+                                                مرحباً {currentCustomer.name}
+                                        </Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                {!currentCustomer && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/login">
+                                        تسجيل الدخول
+                                        </Link>
+                                    </li>
+                                )}
+                                </>
+                            )}
                     </ul>
                 </div>
             </div>

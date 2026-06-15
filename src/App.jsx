@@ -3,6 +3,9 @@ import MainLayout from "./layouts/MainLayouts";
 import { useEffect } from "react";
 /*data*/ 
 import products from "./data/products";
+/*Routes */
+import ProtectedRoute from "./routes/ProtectedRoute";
+import CustomerProtectedRoute from "./routes/CustomerProtectedRoute";
 /*pages*/
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -10,6 +13,8 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
+import CustomerRegister from "./pages/CustomerRegister";
+import CustomerLogin from "./pages/CustomerLogin";
 /*admin*/
 import Dashboard from "./admin/Dashboard";
 import ProductsManagement from "./admin/ProductsManagement";
@@ -18,9 +23,7 @@ import EditProduct from "./admin/EditProduct";
 import AddProduct from "./admin/AddProduct";
 import OrderDetails from "./admin/OrderDetails";
 import AdminLogin from "./admin/AdminLogin";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
-
 function App() {
 
   useEffect(() => {
@@ -36,10 +39,12 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
+          <Route path="register" element={<CustomerRegister />} />
+          <Route path="login" element={<CustomerLogin />} />
           <Route path="products" element={<Products />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="orders" element={<Orders />} />
+          <Route path="checkout" element={<CustomerProtectedRoute><Checkout /></CustomerProtectedRoute>} />
+          <Route path="orders" element={<CustomerProtectedRoute><Orders /></CustomerProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Route>
         

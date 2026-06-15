@@ -182,3 +182,62 @@
     border-right-color: var(--border);
   }
 }
+
+/* Auth Branding */
+.auth-branding {
+    background: linear-gradient(135deg, #198754, #157347);
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Title */
+.branding-title {
+    font-size: 2.8rem;
+    line-height: 1.4;
+    max-width: 350px;
+    text-align: center;
+}
+
+/* Description */
+.branding-description {
+    max-width: 420px;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Floating Icons */
+.floating-icon {
+    position: absolute;
+    font-size: 2rem;
+    animation: float 4s ease-in-out infinite;
+    opacity: 0.9;
+}
+
+/* Animation */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .branding-title {
+        font-size: 2rem;
+    }
+
+    .branding-description {
+        font-size: 1rem;
+    }
+}

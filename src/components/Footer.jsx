@@ -4,6 +4,8 @@ function Footer() {
             <div className="container-fluid">
                 <p className="mb-1">
                     © 2026 الشروق للخضار والفواكه
+                    <br />
+                    Developed by Taleb Amro
                 </p>
 
                 <small>

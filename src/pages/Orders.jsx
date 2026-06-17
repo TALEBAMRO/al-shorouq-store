@@ -1,5 +1,11 @@
 function Orders() {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer")) || [];
+
+    const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    const orders = allOrders.filter(
+        order => order.customerId === currentCustomer.email 
+    );
 
     return (
         <div className="container py-5">

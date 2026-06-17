@@ -15,6 +15,7 @@ import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 import CustomerRegister from "./pages/CustomerRegister";
 import CustomerLogin from "./pages/CustomerLogin";
+import Profile from "./pages/Profile";
 /*admin*/
 import Dashboard from "./admin/Dashboard";
 import ProductsManagement from "./admin/ProductsManagement";
@@ -45,6 +46,7 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<CustomerProtectedRoute><Checkout /></CustomerProtectedRoute>} />
           <Route path="orders" element={<CustomerProtectedRoute><Orders /></CustomerProtectedRoute>} />
+          <Route path="profile" element={<CustomerProtectedRoute><Profile /></CustomerProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Route>
         

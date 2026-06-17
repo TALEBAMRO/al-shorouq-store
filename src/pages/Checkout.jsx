@@ -28,10 +28,14 @@ function Checkout() {
             return;
         }
 
+        const currentCustomer = 
+            JSON.parse(localStorage.getItem("currentCustomer"));
+
         const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
 
         const newOrder = {
             id: Date.now(),
+            customerId: currentCustomer.email,
             customer: customerData,
             items: cartItems,
             totalPrice,

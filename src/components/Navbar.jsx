@@ -16,7 +16,6 @@ function Navbar() {
     const handleLogout = () => {
         localStorage.removeItem("currentCustomer");
         navigate("/");
-        window.location.reload();
     };
 
     return (
@@ -70,32 +69,33 @@ function Navbar() {
                             {currentCustomer ? (
                                 <>
                                     <li className="nav-item">
+                                        <Link
+                                            className="nav-link text-warning fw-bold"
+                                            to="/profile"
+                                        >
+                                            مرحباً {currentCustomer.name}
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
                                         <button
-                                            className="btn btn-link nav-link"
+                                            className="btn btn-success rounded-pill px-3 py-2 fs-5 fw-bold text-light"
+                                            style={{ marginTop: "6px"}}
                                             onClick={handleLogout}
                                         >
                                             تسجيل الخروج
                                         </button>
                                     </li>
-                                    <li className="nav-item">
-                                        <Link 
-                                            className="nav-link"
-                                            to="/profile"
-                                            >
-                                                مرحباً {currentCustomer.name}
-                                        </Link>
-                                    </li>
                                 </>
                             ) : (
-                                <>
-                                {!currentCustomer && (
-                                    <li className="nav-item">
-                                        <Link className="nav-link" to="/login">
+                                <li className="nav-item">
+                                    <Link 
+                                        className="nav-link"
+                                        to="/login"
+                                    >
                                         تسجيل الدخول
-                                        </Link>
-                                    </li>
-                                )}
-                                </>
+                                    </Link>
+                                </li>
                             )}
                     </ul>
                 </div>

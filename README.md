@@ -1,47 +1,77 @@
 # 🌿 Al-Shorouq Store
 
-An online fruit and vegetable store built with **React** and **Vite**. The project provides a complete shopping experience, including browsing products, managing a shopping cart, placing orders, and viewing order history.
+A modern online fruit and vegetable store built with **React** and **Vite**. The application provides a complete e-commerce experience, including product browsing, shopping cart management, customer authentication, order tracking, invoice generation, and admin order management.
+
+---
 
 ## 🚀 Features
 
-### Customer Features
+### 👤 Customer Features
 
-* Browse fruits and vegetables.
-* Search for products.
-* Filter products by category.
-* Add products to the shopping cart.
-* Update product quantities.
-* Remove products from the cart.
-* Calculate the total price automatically.
-* Checkout with customer information.
-* Cash on delivery payment option.
-* Place orders successfully.
-* View previous orders.
-* Order status tracking.
-* Responsive design for different screen sizes.
-* Arabic RTL support.
+- Browse fruits and vegetables.
+- Search products by name.
+- Filter products by category.
+- View product details.
+- Add products to cart.
+- Update product quantities.
+- Remove products from cart.
+- Automatic total price calculation.
+- Checkout with customer information.
+- Cash on Delivery payment option.
+- Place and save orders.
+- View previous orders.
+- Download invoices as PDF.
+- Profile dashboard.
+- Responsive design.
+- Arabic RTL support.
 
-### Technical Features
+---
 
-* React + Vite.
-* React Router for navigation.
-* Bootstrap for styling.
-* Context API for cart state management.
-* Local Storage for data persistence.
-* Reusable components architecture.
+### 🔑 Authentication
+
+- Customer Registration.
+- Customer Login.
+- Admin Login.
+- Logout functionality.
+- Protected Routes.
+
+---
+
+### 🛠️ Admin Features
+
+- View all customer orders.
+- View order details.
+- Update order status.
+- Delete orders.
+- Download invoices as PDF.
+
+---
+
+### ⚙️ Technical Features
+
+- React + Vite.
+- React Router DOM.
+- Bootstrap 5.
+- Context API for cart management.
+- Local Storage persistence.
+- Reusable Components Architecture.
+- PDF Invoice Generation using jsPDF & html2canvas.
+
+---
 
 ## 🛠️ Technologies Used
 
-* React
-* Vite
-* Bootstrap 5
-* React Router DOM
-* Context API
-* Local Storage
+- React
+- Vite
+- JavaScript (ES6+)
+- Bootstrap 5
+- React Router DOM
+- Context API
+- Local Storage
+- jsPDF
+- html2canvas
 
-## 📸 Screenshots
-
-Screenshots of the application will be added soon.
+---
 
 ## 📂 Project Structure
 
@@ -53,16 +83,19 @@ src/
 ├── data/
 ├── layouts/
 ├── pages/
+├── utils/
 ├── App.jsx
 └── main.jsx
 ```
+
+---
 
 ## ▶️ Getting Started
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git clone https://github.com/TALEBAMRO/al-shorouq-store
 ```
 
 Navigate to the project folder:
@@ -83,18 +116,33 @@ Run the development server:
 npm run dev
 ```
 
+---
+
+## 📸 Screenshots
+
+Screenshots will be added soon.
+
+---
+
 ## 🔮 Future Improvements
 
-* Admin dashboard.
-* Product management system.
-* Order management system.
-* User authentication.
-* Customer accounts.
-* Multiple payment methods.
-* Backend integration.
+- Backend integration with Node.js and MySQL.
+- Online payment gateway integration.
+- Product inventory management.
+- Sales analytics dashboard.
+- Multi-language support.
+- Email order confirmations.
+
+---
 
 ## 👨‍💻 Author
 
-**Taleb Amro**
+### Taleb Amro
 
-Computer Engineering Student 
+Computer Engineer
+
+Focused on building modern web applications using React, JavaScript, and Full-Stack technologies.
+
+---
+
+⭐ If you like this project, feel free to star the repository.

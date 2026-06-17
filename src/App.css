@@ -241,3 +241,27 @@
         font-size: 1rem;
     }
 }
+
+/*ٌResponsive*/
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.container,
+.container-fluid {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}

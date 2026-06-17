@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { downloadInvoice } from "../utils/invoiceGenerator";
 
 function OrderDetails() {
     const { id } = useParams();
@@ -12,6 +13,9 @@ function OrderDetails() {
     );
 
     const [status, setStatus] = useState(order?.status || "");
+
+    const invoiceRef = useRef();
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
     if (!order) {
         return (
@@ -132,8 +136,7 @@ function OrderDetails() {
                 </thead>
 
                 <tbody>
-                    {order.items.map((item) => { 
-                        console.log(item);
+                    {order.items.map((item) => {
                         return ( 
                         <tr key={item.id}>
                             <td>
@@ -232,6 +235,17 @@ function OrderDetails() {
                         </button>
 
                         <button
+                            className="btn btn-primary"
+                            onClick={() => downloadInvoice(
+                                                order,
+                                            invoiceRef,
+                                        setSelectedOrder
+                                    )}
+                        >
+                            Download Invoice
+                        </button>
+
+                        <button
                             className="btn btn-danger"
                             onClick={handleDelete}
                         >
@@ -240,7 +254,88 @@ function OrderDetails() {
                     </div>
                 </div>
             </div>
+                {selectedOrder && (
+                    <div 
+                        ref={invoiceRef}
+                        style={{
+                            direction: "rtl",
+                            textAlign: "right",
+                            position: "absolute",
+                            left: "-9999px",
+                            width: "800px",
+                            background: "white",
+                            padding: "30px"
+                        }}
+                    >
+                        <h1 className="text-center mb-4">
+                            AL-Shorouq Store
+                        </h1>
 
+                        <hr />
+
+                    <h3 className="mb-4">فاتورة رقم# {selectedOrder.id}</h3>
+
+                    <p>
+                        <strong>التاريخ:</strong>
+                        {" "}
+                        {selectedOrder.date}
+                    </p>
+
+                    <p>
+                        <strong>العميل:</strong>
+                        {" "}
+                        {selectedOrder.customer.fullName}
+                    </p>
+
+                    <p>
+                        <strong>الهاتف:</strong>
+                        {" "}
+                        {selectedOrder.customer.phone}
+                    </p>
+
+                    <p>
+                        <strong>العنوان:</strong>
+                        {" "}
+                        {selectedOrder.customer.address}
+                    </p>
+
+                    <p>
+                        <strong>طريقة الدفع:</strong>
+                        {" "}
+                        {selectedOrder.paymentMethod}
+                    </p>
+
+                    <hr />
+
+                    <h4>المنتجات</h4>
+
+                    <table className="table table-bordered table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>المنتج</th>
+                                <th>الكمية</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {selectedOrder.items.map((item) => (
+                                <tr 
+                                    key={item.id}>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                    </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <hr />
+                    <h3>
+                        الإجمالي:
+                        {" "}
+                        {selectedOrder.totalPrice} ₪
+                    </h3>
+                </div>
+            )}
         </div>
     );
 }

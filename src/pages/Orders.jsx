@@ -1,3 +1,6 @@
+import { useState, useRef } from "react";
+import { downloadInvoice } from "../utils/invoiceGenerator";
+
 function Orders() {
     const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer")) || [];
 
@@ -6,6 +9,9 @@ function Orders() {
     const orders = allOrders.filter(
         order => order.customerId === currentCustomer.email 
     );
+
+    const invoiceRef = useRef();
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
     return (
         <div className="container py-5">
@@ -74,6 +80,7 @@ function Orders() {
                                 <h6 className="fw-bold mb-3">
                                     المنتجات:
                                 </h6>
+
                                 <div className="d-flex flex-column gap-2">
                                 {order.items.map((item) => (
                                     <div 
@@ -85,10 +92,99 @@ function Orders() {
                                     </div>
                                 ))}
                                 </div>
+                                <button 
+                                    className="btn btn-success w-100 mt-3"
+                                    onClick={() => downloadInvoice(
+                                                        order,
+                                                    invoiceRef,
+                                                setSelectedOrder
+                                            )}
+                                >
+                                    تحميل الفاتورة
+                                </button>
                             </div>
                         </div>
                     </div>
                     ))}
+                </div>
+            )}
+            {selectedOrder && (
+                <div 
+                    ref={invoiceRef}
+                    style={{
+                        direction: "rtl",
+                        textAlign: "right",
+                        position: "absolute",
+                        left: "-9999px",
+                        width: "800px",
+                        background: "white",
+                        padding: "30px"
+                    }}
+                >
+                    <h1 className="text-center mb-4">AL-Shorouq Store</h1>
+                    <hr />
+
+                    <h3 className="mb-4">فاتورة رقم# {selectedOrder.id}</h3>
+
+                    <p>
+                        <strong>التاريخ:</strong>
+                        {" "}
+                        {selectedOrder.date}
+                    </p>
+
+                    <p>
+                        <strong>العميل:</strong>
+                        {" "}
+                        {selectedOrder.customer.fullName}
+                    </p>
+
+                    <p>
+                        <strong>الهاتف:</strong>
+                        {" "}
+                        {selectedOrder.customer.phone}
+                    </p>
+
+                    <p>
+                        <strong>العنوان:</strong>
+                        {" "}
+                        {selectedOrder.customer.address}
+                    </p>
+
+                    <p>
+                        <strong>طريقة الدفع:</strong>
+                        {" "}
+                        {selectedOrder.paymentMethod}
+                    </p>
+
+                    <hr />
+
+                    <h4>المنتجات</h4>
+
+                    <table className="table table-bordered table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>المنتج</th>
+                                <th>الكمية</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {selectedOrder.items.map((item) => (
+                                <tr 
+                                    key={item.id}>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                    </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <hr />
+                    <h3>
+                        الإجمالي:
+                        {" "}
+                        {selectedOrder.totalPrice} ₪
+                    </h3>
                 </div>
             )}
         </div>

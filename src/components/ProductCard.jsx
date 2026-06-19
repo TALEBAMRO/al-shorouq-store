@@ -9,7 +9,7 @@ function ProductCard({product}) {
                 {product.image}
             </div>
 
-            <div className="card-body text-center">
+            <div className="card-body text-center d-flex flex-column">
 
                 <h5 className="card-title fw-bold">
                     {product.name}
@@ -20,7 +20,7 @@ function ProductCard({product}) {
                 <h6 className="text-success fw-bold mb-3">
                     {product.price} ₪
                 </h6>
-                <button className="btn btn-success w-100"
+                <button className="btn btn-success w-100 mt-auto"
                         onClick={() => addToCart(product)}
                 >
                     أضف الى السلة

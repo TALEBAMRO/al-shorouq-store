@@ -83,7 +83,7 @@ function Products() {
             <div className="row g-4">
                 {filteredProducts.map((product) => (
                     <div key={product.id} 
-                        className="col-4 col-md-4 col-xl-3">
+                        className="col-6 col-md-4 col-xl-3">
                             <ProductCard product={product} />
                         </div>
                 ))}

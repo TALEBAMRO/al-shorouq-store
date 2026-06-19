@@ -56,13 +56,13 @@ function Checkout() {
 
     return (
         <div className="container py-5">
-            <h1 className="text-center fw-bold mb-5">
+            <h1 className="text-center fw-bold mb-4 mb-md-5">
                 إتمام الطلب
             </h1>
             <div className="row justify-content-center">
-                <div className="col-lg-8">
+                <div className="col-12 col-md-10 col-lg-8">
                     <div className="card shadow-sm border-0">
-                        <div className="card-body p-4">
+                        <div className="card-body p-3 p-md-4 text-end">
                             <div className="mb-3">
                                 <label className="form-label">
                                     الاسم الكامل

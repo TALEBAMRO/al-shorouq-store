@@ -27,9 +27,9 @@ function Cart() {
                     {cartItems.map((item) => (
                         <div key={item.id} className="col-12">
                             <div className="card shadow-sm border-0">
-                                <div className="card-body d-flex justify-content-between align-items-center flex-wrap">
-                                    <div className="d-flex align-items-center gap-3">
-                                        <div className="fs-1">
+                                <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                                    <div className="d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start">
+                                        <div className="fs-1 mb-2 mb-md-0">
                                             {item.image}
                                         </div>
 
@@ -44,12 +44,12 @@ function Cart() {
                                         </div>
                                     </div>
 
-                                    <div className="text-end">
+                                    <div className="text-center text-md-end w-100 w-md-auto">
                                         <p className="mb-1">
                                             السعر:{item.price} ₪
                                         </p>
                                         
-                                        <div className="d-flex align-items-center justify-content-end gap-2 mb-2">
+                                        <div className="d-flex align-items-center justify-content-center justify-content-md-end gap-2 mb-2 flex-wrap">
                                             <button 
                                                 className="btn btn-outline-success btn-sm"
                                                 onClick={() => increaseQuantity(item.id)}>
@@ -81,7 +81,7 @@ function Cart() {
                 </div>
 
                 <div className="card shadow-sm border-0 mt-4">
-                    <div className="card-body d-flex justify-content-between align-items-center">
+                    <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 text-center">
                         <h4 className="mb-0">
                             المجموع الكلي:
                         </h4>

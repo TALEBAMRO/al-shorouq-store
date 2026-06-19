@@ -5,7 +5,7 @@ function Home() {
         <>
         <section className="text-center py-5">
             <div className="container">
-                <h1 className="display-4 fw-bold text-success mb-4">
+                <h1 className="display-4 fw-bold text-success mb-4 hero-title">
                     🍎🥕🥬خضار وفواكه طازجة يومياً
                 </h1>
 
@@ -28,7 +28,7 @@ function Home() {
                 </h2>
 
                 <div className="row g-4">
-                    <div className="col-md-4">
+                    <div className="col-6 col-md-4">
                         <Link to="/products" className="text-decoration-none">
                             <div className="card border-0 shadow-sm h-100 text-center p-4">
                                 <div className="fs-1 mb-3">
@@ -46,7 +46,7 @@ function Home() {
                         </Link>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-6 col-md-4">
                         <Link to="/products" className="text-decoration-none">
                             <div className="card border-0 shadow-sm h-100 text-center p-4">
                                 <div className="fs-1 mb-3">
@@ -92,7 +92,7 @@ function Home() {
                 </h2>
 
                 <div className="row g-4">
-                    <div className="col-md-4">
+                    <div className="col-6 col-md-4">
                         <div className="card border-0 shadow-sm h-100 text-center p-4">
                             <div className="fs-1 mb-3">🌿</div>
 
@@ -106,7 +106,7 @@ function Home() {
                         </div>
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-6 col-md-4">
                         <div className="card border-0 shadow-sm h-100 text-center p-4">
                             <div className="fs-1 mb-3">🚚</div>
 

@@ -20,7 +20,7 @@ function Products() {
         <div className="container py-5">
 
             <div className="row mb-4">
-                <div className="col-md-6 mb-3">
+                <div className="col-12 col-md-6 mb-3">
                     <input 
                         type="text"
                         className="form-control"
@@ -30,18 +30,49 @@ function Products() {
                     />
                 </div>
 
-                <div className="col-md-6 mb-3">
-                    <select 
-                        className="form-select"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)
-                        }
-                    >
-                        <option>الكل</option>
-                        <option>الخضار</option>
-                        <option>الفواكه</option>
-                        <option>العروض</option>
-                    </select>
+                <div className="col-12 mb-3">
+                    <div className="d-flex justify-content-center gap-2 flex-wrap">
+                        <button
+                            className={`btn ${
+                                selectedCategory === "الكل"
+                                    ?"btn-success"
+                                    : "btn-outline-success"
+                                }`}
+                                onClick={() => setSelectedCategory("الكل")}
+                        >
+                            الكل
+                        </button>
+                        <button
+                            className={`btn ${
+                                selectedCategory === "الخضار"
+                                ? "btn-success"
+                                : "btn-outline-success"
+                                }`}
+                                onClick={() => setSelectedCategory("الخضار")}
+                        >
+                            الخضار
+                        </button>
+                        <button
+                            className={`btn ${
+                                selectedCategory === "الفواكه"
+                                ? "btn-success"
+                                : "btn-outline-success"
+                                }`}
+                                onClick={() => setSelectedCategory("الفواكه")}
+                        >
+                            الفواكه
+                        </button>
+                        <button
+                            className={`btn ${
+                                selectedCategory === "العروض"
+                                ? "btn-success"
+                                : "btn-outline-success"
+                                }`}
+                                onClick={() => setSelectedCategory("العروض")}
+                        >
+                            العروض
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -52,7 +83,7 @@ function Products() {
             <div className="row g-4">
                 {filteredProducts.map((product) => (
                     <div key={product.id} 
-                        className="col-12 col-sm-6 col-md-4 col-xl-3">
+                        className="col-4 col-md-4 col-xl-3">
                             <ProductCard product={product} />
                         </div>
                 ))}

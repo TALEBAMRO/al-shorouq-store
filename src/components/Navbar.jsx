@@ -20,7 +20,7 @@ function Navbar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
-            <div className="container-fluid px-4">
+            <div className="container-fluid">
 
                 <Link className="navbar-brand fw-bold fs-4" to="/">
                     🌿 الشروق للخضار والفواكه

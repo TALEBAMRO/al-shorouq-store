@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 /*import { Link } from "react-router-dom";*/
 import { CartContext } from "../context/cart-context";
 import { useNavigate } from "react-router-dom";
+/*backend*/
+import { createOrder } from "../services/orderService";
 
 function Checkout() {
     const {cartItems, clearCart} = useContext(CartContext);
@@ -18,7 +20,7 @@ function Checkout() {
         address: "",
     });
 
-    const handleConfirmOrder = () => {
+    const handleConfirmOrder = async () => {
         if(
             !customerData.fullName ||
             !customerData.phone ||
@@ -28,30 +30,21 @@ function Checkout() {
             return;
         }
 
-        const currentCustomer = 
-            JSON.parse(localStorage.getItem("currentCustomer"));
+        try {
+            await createOrder({
+                customer_name: customerData.fullName,
+                phone: customerData.phone,
+                address: customerData.address,
+                total_price: totalPrice,
+            });
 
-        const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-
-        const newOrder = {
-            id: Date.now(),
-            customerId: currentCustomer.email,
-            customer: customerData,
-            items: cartItems,
-            totalPrice,
-            paymentMethod: "الدفع عند الاستلام",
-            status: "قيد المعالجة",
-            date: new Date().toLocaleString("ar"),
-        };
-
-        localStorage.setItem(
-            "orders",
-            JSON.stringify([...existingOrders, newOrder])
-        );
-
-        clearCart();
-
-        navigate("/orders");
+            clearCart();
+            alert("تم ارسال الطلب بنجاح");
+            navigate("/orders");
+        } catch (error) {
+            console.error(error);
+            alert("فشل طلب الارسال");
+        }
     };
 
     return (

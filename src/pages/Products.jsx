@@ -1,11 +1,25 @@
-import {useState} from "react";
+import { useState, useEffect } from "react";
+import { getProducts } from "../services/productService";
 import ProductCard from "../components/ProductCard";
 
 function Products() {
-        const products = JSON.parse(localStorage.getItem("products")) || [];
 
         const [searchTerm, setSearchTerm] = useState("");
         const [selectedCategory, setSelectedCategory] = useState("الكل");
+        const [products, setProducts] = useState([]);
+
+        useEffect(() => {
+            const fetchProducts = async () => {
+                try {
+                    const data = await getProducts();
+                    setProducts(data);
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
+            };
+
+            fetchProducts();
+        }, []);
 
         const filteredProducts = products.filter((product) => {
             const matchesSearch = product.name.includes(searchTerm);
@@ -15,6 +29,7 @@ function Products() {
 
             return matchesSearch && matchesCategory;
         })
+
 
     return (
         <div className="container py-5">

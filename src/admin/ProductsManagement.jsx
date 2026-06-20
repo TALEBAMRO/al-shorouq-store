@@ -1,26 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {getProducts, 
+        deleteProduct as deleteProductApi } from "../services/productService";
 
 function ProductsManagement() {
-    const [products, setProducts] = useState(
-        JSON.parse(localStorage.getItem("products")) || []
-    );
+    const [products, setProducts] = useState([]);
 
-    const handleDelete = (id) => {
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const data = await getProducts();
+                setProducts(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    const handleDelete = async (id) => {
         const confirmDelete = window.confirm(
             "Are you sure you want to delete this product?"
         );
 
         if(!confirmDelete) return;
-        const updatedProducts = products.filter(
-            (product) => product.id !== id 
-        );
 
-        setProducts(updatedProducts);
+        try {
+            await deleteProductApi(id);
 
-        localStorage.setItem(
-            "products", JSON.stringify(updatedProducts)
-        );
+            setProducts(
+                products.filter(
+                    (product) => product.id !== id
+                )
+            );
+        } catch (error) {
+            console.error(error);
+            alert("Failed to delete product");
+        }
     };
 
     return (
@@ -58,8 +75,8 @@ function ProductsManagement() {
                                 <tr key={product.id}>
                                     <td>{product.id}</td>
 
-                                    <td style={{fontSize: "1.5rem"}}>
-                                        {product.image}
+                                    <td>
+                                        {product.image_url || "No Image"}
                                     </td>
                                     <td>{product.name}</td>
                                     <td>{product.category}</td>

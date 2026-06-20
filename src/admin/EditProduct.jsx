@@ -1,48 +1,63 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+    getProductById,
+    updateProduct
+} from "../services/productService";
 
 function EditProduct() {
     const { id } = useParams();
-
     const navigate = useNavigate();
-    const handleSave = () => {
-        const updatedProducts = products.map((product) => {
-            if (product.id === Number(id)) {
-                return {
-                    ...product,
-                    name,
-                    price: Number(price),
-                    category,
-                    image,
-                };
-            }
 
-            return product;
-        });
+    const handleSave = async () => {
+        try {
+            await updateProduct(id, {
+                name,
+                price: Number(price),
+                category,
+                image_url: image,
+                stock: 0,
+                description: ""
+            });
 
-        localStorage.setItem(
-            "products", JSON.stringify(updatedProducts)
-        );
-
-        alert("Product updated successfully!");
-        navigate("/admin/products");
+            alert("Product updated successfully!");
+            navigate("/admin/products");
+        } catch (error) {
+            console.error(error);
+            alert("Failed to update product");
+        }
     };
+        
 
-    const products = JSON.parse(localStorage.getItem("products")) || [];
+        const [loading, setLoading] = useState(true);
 
-    const product = products.find(
-        (product) => product.id === Number(id)
-    );
+        const [name, setName] = useState("");
+        const [price, setPrice] = useState("");
+        const [category, setCategory] = useState("");
+        const [image, setImage] = useState("");
 
-    const [name, setName] = useState(product.name);
-    const [price, setPrice] = useState(product.price);
-    const [category, setCategory] = useState(product.category);
-    const [image, setImage] = useState(product.image); 
+        useEffect(() => {
+            const fetchProduct = async () => {
+                try {
+                    const product = await getProductById(id);
 
-    if(!product) {
+                    setName(product.name);
+                    setPrice(product.price);
+                    setCategory(product.category);
+                    setImage(product.image_url || "");
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchProduct();
+        }, [id]);
+
+    if(loading) {
         return (
             <div className="container py-5">
-                <h2>Product not found.</h2>
+                <h3>Loading...</h3>
             </div>
         );
     }

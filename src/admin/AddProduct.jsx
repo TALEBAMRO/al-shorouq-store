@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createProduct } from "../services/productService";
 
 function AddProduct() {
 
@@ -10,29 +11,29 @@ const [price, setPrice] = useState("");
 const [category, setCategory] = useState("");
 const [image, setImage] = useState("");
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const products = JSON.parse(localStorage.getItem("products")) || [];
-
+    try { 
     const newProduct = {
-        id: products.length > 0 
-                    ? Math.max(...products.map((p) => p.id)) + 1
-                    :1,
                     name,
                     price: Number(price),
                     category,
-                    image,
+                    image_url: image,
+                    stock: 0,
+                    description: ""
     };
 
-    const updatedProducts = [...products, newProduct];
-
-    localStorage.setItem (
-        "products", JSON.stringify(updatedProducts)
-    );
+    await createProduct(newProduct);
 
     alert("Product added successfully!");
     navigate("/admin/products");
+
+    } catch (error) {
+        console.error(error);
+        console.log(error.response?.data);
+        alert("Failed to add product");
+    }
 };
     return (
         <div className="container py-5">

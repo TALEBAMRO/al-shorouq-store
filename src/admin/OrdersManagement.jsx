@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getOrders } from "../services/orderService";
 import { Link } from "react-router-dom";
 
 function OrdersManagement() {
-    const [orders, setOrders] = useState(
-        JSON.parse(localStorage.getItem("orders")) || []
-    );
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const data = await getOrders();
+                setOrders(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchOrders();
+    }, []);
 
     const handleDelete = (id) => {
         const confirmDelete = window.confirm(
@@ -13,23 +25,29 @@ function OrdersManagement() {
 
         if (!confirmDelete) return;
 
-        const updatedOrders = orders.filter(
+        setOrders(
+            orders.filter((order) => order.id !== id)
+        );
+
+        /*const updatedOrders = orders.filter(
             (order) => order.id !== id
         );
 
-        setOrders(updatedOrders);
-
-        localStorage.setItem(
-            "orders",
-            JSON.stringify(updatedOrders)
-        );
+        setOrders(updatedOrders);*/
     };
 
     const statusColor = {
-        "قيد المعالجة" : "warning",
-        "تم الشحن" : "primary",
-        "تم التسليم" : "success",
+        Pending: "warning",
+        Processing: "primary",
+        Delivered: "success",
+        Cancelled: "danger",
     };
+    const statusText = {
+    Pending: "قيد المعالجة",
+    Processing: "تم الشحن",
+    Delivered: "تم التسليم",
+    Cancelled: "تم الإلغاء",
+};
 
     return (
         <div className="container py-5">
@@ -58,26 +76,26 @@ function OrdersManagement() {
                                     <td>{order.id}</td>
 
                                     <td>
-                                        {order.customer.fullName}
+                                        {order.customer_name}
                                     </td>
 
                                     <td>
-                                        {order.customer.phone}
+                                        {order.phone}
                                     </td>
 
                                     <td>
-                                        ₪ {order.totalPrice}
+                                        ₪ {order.total_price}
                                     </td>
 
                                     <td>
                                         <span
                                             className={`badge bg-${statusColor[order.status]} fs-6`}
                                         >
-                                            {order.status}
+                                            {statusText[order.status]}
                                         </span>
                                     </td>
 
-                                    <td>{order.date}</td>
+                                    <td>{new Date(order.created_at).toLocaleString()}</td>
 
                                     <td>
                                         <div className="d-flex gap-2">

@@ -9,7 +9,8 @@ function AddProduct() {
 const [name, setName] = useState("");
 const [price, setPrice] = useState("");
 const [category, setCategory] = useState("");
-const [image, setImage] = useState("");
+const [imageFile, setImageFile] = useState(null);
+const [preview, setPreview] = useState("");
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const handleSubmit = async (e) => {
                     name,
                     price: Number(price),
                     category,
-                    image_url: image,
+                    image_url: imageFile,
                     stock: 0,
                     description: ""
     };
@@ -100,11 +101,30 @@ const handleSubmit = async (e) => {
                             </label>
 
                             <input 
-                                type="text"
+                                type="file"
                                 className="form-control"
-                                value={image}
-                                onChange={(e) => setImage(e.target.value)}
-                                required />
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    setImageFile(file);
+
+                                    if (file) {
+                                        setPreview(URL.createObjectURL(file));
+                                    }
+                                }}
+                            />
+                            {preview && (
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    className="img-thumbnail mt-3"
+                                    style={{
+                                        width: "150px",
+                                        height: "150px",
+                                        objectFit: "cover"
+                                    }}
+                                />
+                            )}
                         </div>
 
                         <button 

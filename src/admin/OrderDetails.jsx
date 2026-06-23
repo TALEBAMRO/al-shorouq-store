@@ -152,9 +152,20 @@ function OrderDetails() {
                         return ( 
                         <tr key={item.id}>
                             <td>
-                                <span style={{fontSize: "2rem"}}>
-                                    {item.image}
-                                </span>
+                                {item.image_url ? (
+                                    <img
+                                        src={item.image_url}
+                                        alt={item.product_name}
+                                        style={{
+                                            width: "60px",
+                                            height: "60px",
+                                            objectFit: "cover",
+                                            borderRadius: "8px"
+                                        }}
+                                    />
+                                    ) : ( 
+                                        "No Image"
+                                )}
                             </td>
 
                             <td>{item.product_name}</td>

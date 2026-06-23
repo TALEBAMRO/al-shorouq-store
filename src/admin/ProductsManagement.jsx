@@ -76,7 +76,20 @@ function ProductsManagement() {
                                     <td>{product.id}</td>
 
                                     <td>
-                                        {product.image_url || "No Image"}
+                                        {product.image_url ? (
+                                            <img
+                                                src={product.image_url}
+                                                alt={product.name}
+                                                style={{
+                                                    width: "60px",
+                                                    height: "60px",
+                                                    objectFit: "cover",
+                                                    borderRadius: "8px"
+                                                }}
+                                            />
+                                            ) : ( 
+                                                "No Image"
+                                        )}
                                     </td>
                                     <td>{product.name}</td>
                                     <td>{product.category}</td>

@@ -10,6 +10,12 @@ function EditProduct() {
     const navigate = useNavigate();
 
     const handleSave = async () => {
+
+        if (!name || !price || !category) {
+            alert("Please fill all fields");
+            return;
+        }
+
         try {
             await updateProduct(id, {
                 name,

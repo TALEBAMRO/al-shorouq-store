@@ -1,17 +1,31 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { downloadInvoice } from "../utils/invoiceGenerator";
+import { getOrderByCustomer } from "../services/orderService";
 
 function Orders() {
     const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer")) || [];
 
-    const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
-
-    const orders = allOrders.filter(
-        order => order.customerId === currentCustomer.email 
-    );
-
     const invoiceRef = useRef();
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const data = await getOrderByCustomer(
+                    currentCustomer.email 
+                );
+
+                setOrders(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (currentCustomer?.email) {
+            fetchOrders();
+        }
+    }, [currentCustomer?.email]);
 
     return (
         <div className="container py-5">
@@ -39,33 +53,33 @@ function Orders() {
                                             طلب #{order.id}
                                         </h5>
                                         <p className="text-muted mb-0">
-                                            {order.date}
+                                            {new Date(order.created_at).toLocaleDateString()}
                                         </p>
                                     </div>
 
                                     <h5 className="text-success fw-bold mb-0">
-                                        {order.totalPrice} ₪
+                                        {order.total_price} ₪
                                     </h5>
                                 </div>
                                 <hr />
                                 <p>
                                     <strong>العميل:</strong>{" "}
-                                    {order.customer.fullName}
+                                    {order.customer_name}
                                 </p>
 
                                 <p>
                                     <strong>الهاتف:</strong>{" "}
-                                    {order.customer.phone}
+                                    {order.phone}
                                 </p>
 
                                 <p>
                                     <strong>العنوان:</strong>{" "}
-                                    {order.customer.address}
+                                    {order.address}
                                 </p>
 
                                 <p>
                                     <strong>طريقة الدفع:</strong>{" "}
-                                    {order.paymentMethod}
+                                    {order.payment_method}
                                 </p>
 
                                 <p>
@@ -87,7 +101,7 @@ function Orders() {
                                         key={item.id}
                                         className="bg-light rounded p-2 d-flex justify-content-between align-items-center"
                                     >
-                                        <span>{item.image} {item.name}</span>
+                                        <span>{item.product_name}</span>
                                         <span className="badge bg-success">× {item.quantity}</span>
                                     </div>
                                 ))}
@@ -129,31 +143,31 @@ function Orders() {
                     <p>
                         <strong>التاريخ:</strong>
                         {" "}
-                        {selectedOrder.date}
+                        {new Date(selectedOrder.created_at).toLocaleDateString()}
                     </p>
 
                     <p>
                         <strong>العميل:</strong>
                         {" "}
-                        {selectedOrder.customer.fullName}
+                        {selectedOrder.customer_name}
                     </p>
 
                     <p>
                         <strong>الهاتف:</strong>
                         {" "}
-                        {selectedOrder.customer.phone}
+                        {selectedOrder.phone}
                     </p>
 
                     <p>
                         <strong>العنوان:</strong>
                         {" "}
-                        {selectedOrder.customer.address}
+                        {selectedOrder.address}
                     </p>
 
                     <p>
                         <strong>طريقة الدفع:</strong>
                         {" "}
-                        {selectedOrder.paymentMethod}
+                        {selectedOrder.payment_method}
                     </p>
 
                     <hr />
@@ -169,12 +183,11 @@ function Orders() {
                         </thead>
 
                         <tbody>
-                            {selectedOrder.items.map((item) => (
-                                <tr 
-                                    key={item.id}>
-                                        <td>{item.name}</td>
-                                        <td>{item.quantity}</td>
-                                    </tr>
+                            {selectedOrder.items?.map((item) => (
+                                <tr key={item.id}>
+                                    <td>{item.product_name}</td>
+                                    <td>{item.quantity}</td>
+                                </tr>
                             ))}
                         </tbody>
                     </table>
@@ -183,7 +196,7 @@ function Orders() {
                     <h3>
                         الإجمالي:
                         {" "}
-                        {selectedOrder.totalPrice} ₪
+                        {selectedOrder.total_price} ₪
                     </h3>
                 </div>
             )}
@@ -192,3 +205,23 @@ function Orders() {
 }
 
 export default Orders;
+
+/* <div className="d-flex flex-column gap-2">
+                                {order.items.map((item) => (
+                                    <div 
+                                        key={item.id}
+                                        className="bg-light rounded p-2 d-flex justify-content-between align-items-center"
+                                    >
+                                        <span>{item.image} {item.name}</span>
+                                        <span className="badge bg-success">× {item.quantity}</span>
+                                    </div>
+                                ))}
+                                </div>
+                                
+                                {selectedOrder.items.map((item) => (
+                                <tr 
+                                    key={item.id}>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                    </tr>
+                            ))}*/

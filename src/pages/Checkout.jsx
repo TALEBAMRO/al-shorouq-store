@@ -20,6 +20,12 @@ function Checkout() {
         address: "",
     });
 
+    const [paymentMethod, setPaymentMethod] = useState("Cash On Delivery");
+
+    const currentCustomer = JSON.parse(
+        localStorage.getItem("currentCustomer")
+    );
+
     const handleConfirmOrder = async () => {
         if(
             !customerData.fullName ||
@@ -35,7 +41,10 @@ function Checkout() {
                 customer_name: customerData.fullName,
                 phone: customerData.phone,
                 address: customerData.address,
+                customer_email: currentCustomer.email,
                 total_price: totalPrice,
+                payment_method: paymentMethod,
+                items: cartItems,
             });
 
             clearCart();
@@ -121,12 +130,26 @@ function Checkout() {
                                 </div>
                             </div>
 
-                            <div className="alert alert-info">
-                                طريقة الدفع:
-                                {" "}
-                                <strong>
-                                    الدفع عند الاستلام
-                                </strong>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    طريقة الدفع
+                                </label>
+
+                                <select 
+                                    className="form-select"
+                                    value={paymentMethod}
+                                    onChange={(e) => 
+                                            setPaymentMethod(e.target.value)
+                                    }
+                                >
+                                    <option value="Cash On Delivery">
+                                        الدفع عند الإستلام
+                                    </option>
+
+                                    <option value="Bank Transfer">
+                                        تحويل بنكي
+                                    </option>
+                                </select>
                             </div>
 
                             <button

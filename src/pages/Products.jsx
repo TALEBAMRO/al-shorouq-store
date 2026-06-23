@@ -22,9 +22,11 @@ function Products() {
         }, []);
 
         const filteredProducts = products.filter((product) => {
-            const matchesSearch = product.name.includes(searchTerm);
+            const matchesSearch = product.name
+                                        .toLowerCase()
+                                        .includes(searchTerm.toLowerCase());
 
-            const matchesCategory = selectedCategory == "الكل" ||
+            const matchesCategory = selectedCategory === "الكل" ||
             product.category === selectedCategory;
 
             return matchesSearch && matchesCategory;
@@ -98,7 +100,7 @@ function Products() {
             <div className="row g-4">
                 {filteredProducts.map((product) => (
                     <div key={product.id} 
-                        className="col- col-md-4 col-xl-3">
+                        className="col-12 col-md-4 col-xl-3">
                             <ProductCard product={product} />
                         </div>
                 ))}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { registerCustomer } from "../services/customerService";
 
 function CustomerRegister() {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ function CustomerRegister() {
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setMessage("");
@@ -42,40 +43,28 @@ function CustomerRegister() {
             return;
         }
 
-        const customers =
-            JSON.parse(localStorage.getItem("customers")) || [];
+        try {
+            await registerCustomer({
+                full_name: fullName,
+                email,
+                phone,
+                password,
+            });
 
-        const existingCustomer = customers.find(
-            (customer) => customer.email === email
-        );
+            setMessage("تم إنشاء الحساب بنجاح")
+            setMessageType("success");
 
-        if (existingCustomer) {
-            setMessage("هذا البريد الإلكتروني مستخدم مسبقاً.");
+            setTimeout(() => {
+                navigate("/login");
+            }, 1500);
+        } catch (error) {
+            setMessage(
+                error.response?.data?.error ||
+                "حدث خطأ أثناء إنشاء الحساب"
+            );
+
             setMessageType("danger");
-            return;
         }
-
-        const newCustomer = {
-            id: Date.now(),
-            name: fullName,
-            email,
-            phone,
-            password,
-        };
-
-        customers.push(newCustomer);
-
-        localStorage.setItem(
-            "customers",
-            JSON.stringify(customers)
-        );
-
-        setMessage("تم إنشاء الحساب بنجاح.");
-        setMessageType("success");
-
-        setTimeout(() => {
-            navigate("/products");
-        }, 1500);
     };
 
     return (

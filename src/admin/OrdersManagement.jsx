@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getOrders } from "../services/orderService";
+import { getOrders, deleteOrder } from "../services/orderService";
 import { Link } from "react-router-dom";
 
 function OrdersManagement() {
@@ -18,22 +18,25 @@ function OrdersManagement() {
         fetchOrders();
     }, []);
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         const confirmDelete = window.confirm(
             "Are you sure you want to delete this order?"
         );
 
         if (!confirmDelete) return;
 
-        setOrders(
-            orders.filter((order) => order.id !== id)
-        );
+        try{
+            await deleteOrder(id);
 
-        /*const updatedOrders = orders.filter(
-            (order) => order.id !== id
-        );
-
-        setOrders(updatedOrders);*/
+            setOrders(
+                orders.filter(
+                    (order) => order.id !== id
+                )
+            );
+        } catch (error) {
+            console.error(error);
+            alert("Failed to delete order");
+        }
     };
 
     const statusColor = {

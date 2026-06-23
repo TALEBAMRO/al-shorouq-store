@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { loginCustomer } from "../services/customerService";
 
 function CustomerLogin() {
     const navigate = useNavigate();
@@ -7,30 +8,26 @@ function CustomerLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const customers = 
-            JSON.parse(localStorage.getItem("customers")) || [];
-
-            const customer = customers.find(
-                (customer) =>
-                    customer.email === email &&
-                    customer.password === password  
+        try {
+            const customer = await loginCustomer(
+                email,
+                password
             );
-
-            if (!customer) {
-                alert("Invalid email or password.");
-                return;
-            }
-
             localStorage.setItem(
                 "currentCustomer",
                 JSON.stringify(customer)
             );
 
-            alert(`Welcome back, ${customer.name}`);
+            alert(`Welcome back, ${customer.full_name}`);
             navigate("/");
+        } catch (error) {
+            alert(
+                error.response?.data?.error || "Invalid email or password"
+            );
+        }
     };
 
     return(

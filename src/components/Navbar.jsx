@@ -73,7 +73,7 @@ function Navbar() {
                                             className="nav-link text-warning fw-bold"
                                             to="/profile"
                                         >
-                                            مرحباً {currentCustomer.name}
+                                            مرحباً {currentCustomer.full_name}
                                         </Link>
                                     </li>
 

@@ -1,32 +1,53 @@
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";*/
+import { useState, useEffect } from "react";
+import { getProducts } from "../services/productService";
+import { getOrders } from "../services/orderService";
 
 function AdminDashboard() {
-    const products = 
-            JSON.parse(localStorage.getItem("products")) || [];
+    const [products, setProducts] = useState([]);
+    const [orders, setOrders] = useState([]);
 
-    const orders = 
-            JSON.parse(localStorage.getItem("orders")) || [];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const productsData = await getProducts();
+                const ordersData = await getOrders();
+
+                setProducts(productsData);
+                setOrders(ordersData);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, []);
     
     const totalSales = orders.reduce(
-        (sum, order) => sum + order.totalPrice,
+        (sum, order) => sum + Number(order.total_price),
         0
     );
-
-    const navigate = useNavigate();
-    const handleLogout = () => {
-        localStorage.removeItem("isAdmin");
-
-        navigate("/admin/login");
-    }
+    
 
     const pendingOrders = orders.filter(
-        (order) => order.status === "قيد المعالجة"
+        (order) => order.status === "Pending"
     ).length;
 
     const latestOrders = [...orders]
-        .reverse()
-        .slice(0,5);
+        .sort(
+            (a, b) =>
+                new Date(b.created_at) -
+                new Date(a.created_at)
+        )
+        .slice(0, 5);
+
+        const statusText = {
+            Pending: "قيد المعالجة",
+            Processing: "تم الشحن",
+            Delivered: "تم التسليم",
+            Cancelled: "تم الإلغاء",
+        };
 
     return (
         <div className="container py-5">
@@ -34,13 +55,6 @@ function AdminDashboard() {
                 <h1 className="fw-bold mb-0">
                     Admin Dashboard 
                 </h1>
-
-                <button 
-                    className="btn btn-outline-danger"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </button>
             </div>
 
             <div className="row g-4">
@@ -136,19 +150,21 @@ function AdminDashboard() {
                                                 #{String(order.id).slice(-5)}
                                                 </Link>
                                             </td>
-                                            <td>{order.customer.fullName}</td>
-                                            <td>₪{order.totalPrice}</td>
+                                            <td>{order.customer_name}</td>
+                                            <td>₪{order.total_price}</td>
                                             <td>
                                                 <span
                                                     className={`badge bg-${
-                                                        order.status === "تم التسليم"
+                                                        order.status === "Delivered"
                                                             ? "success"
-                                                            : order.status === "تم الشحن"
+                                                            : order.status === "Processing"
                                                             ? "primary"
+                                                            :order.status === "Cancelled"
+                                                            ? "danger"
                                                             : "warning"
                                                             }`}
                                                             >
-                                                                {order.status}
+                                                                {statusText[order.status]}
                                                             </span>
                                             </td>
                                         </tr>

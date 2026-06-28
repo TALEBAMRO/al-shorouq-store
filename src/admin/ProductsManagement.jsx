@@ -5,6 +5,7 @@ import {getProducts,
 
 function ProductsManagement() {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -13,6 +14,8 @@ function ProductsManagement() {
                 setProducts(data);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -29,8 +32,8 @@ function ProductsManagement() {
         try {
             await deleteProductApi(id);
 
-            setProducts(
-                products.filter(
+            setProducts((prevProducts) =>
+                prevProducts.filter(
                     (product) => product.id !== id
                 )
             );
@@ -39,6 +42,14 @@ function ProductsManagement() {
             alert("Failed to delete product");
         }
     };
+
+    if (loading) {
+        return (
+            <div className="container py-5 text-center">
+                Loading...
+            </div>
+        );
+    }
 
     return (
         <div className="container py-5">
@@ -71,7 +82,14 @@ function ProductsManagement() {
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((product)=> (
+                            {products.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" className="text-center py-4">
+                                        No products found.
+                                    </td>
+                                </tr>
+                            ) : ( 
+                            products.map((product)=> (
                                 <tr key={product.id}>
                                     <td>{product.id}</td>
 
@@ -93,7 +111,7 @@ function ProductsManagement() {
                                     </td>
                                     <td>{product.name}</td>
                                     <td>{product.category}</td>
-                                    <td className="text-center">₪ {product.price}</td>
+                                    <td className="text-center">₪ {Number(product.price).toFixed(2)}</td>
                                     <td>
                                         <div className="d-flex gap-2 justify-content-center">
                                             <Link 
@@ -109,7 +127,8 @@ function ProductsManagement() {
                                         </div>
                                     </td>
                                 </tr>
-                            ))}
+                            ))
+                        )}
                         </tbody>
                     </table>
                 </div>

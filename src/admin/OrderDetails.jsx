@@ -14,6 +14,13 @@ function OrderDetails() {
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState("");
 
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const invoiceRef = useRef(null);
+
     useEffect(() => {
         const fetchOrder = async () => {
             try {
@@ -23,26 +30,18 @@ function OrderDetails() {
                 setStatus(data.status);
             } catch (error) {
                 console.error(error);
+                alert("Failed to load order.");
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchOrder();
     }, [id]);
 
-    const invoiceRef = useRef();
-    const [selectedOrder, setSelectedOrder] = useState(null);
-
-    if (!order) {
-        return (
-            <div className="container py-5">
-                <div className="text-center">
-                    Loading...
-                </div>
-            </div>
-        );
-    }
-
     const handleSaveStatus = async () => {
+        setSaving(true);
+
         try {
             await updateOrderStatus(
                 order.id,
@@ -54,6 +53,8 @@ function OrderDetails() {
             console.error(error);
 
             alert("Failed to update status");
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -63,6 +64,8 @@ function OrderDetails() {
         );
         if(!confirmDelete) return;
 
+        setDeleting(true);
+
         try {
             await deleteOrder(order.id);
             alert("Order deleted successfully!");
@@ -70,16 +73,43 @@ function OrderDetails() {
             navigate("/admin/orders");
         } catch (error) {
             console.error(error);
-
             alert("Failed to delete order");
+        } finally {
+            setDeleting(false);
         }
     };
 
     const statusColor = {
-        "قيد المعالجة" : "warning",
-        "تم الشحن" : "primary",
-        "تم التسليم" : "success",
+        "Pending" : "warning",
+        "Processing" : "primary",
+        "Delivered" : "success",
+        "Cancelled" : "danger",
     };
+
+    const statusText = {
+        Pending: "قيد المعالجة",
+        Processing: "تم الشحن",
+        Delivered: "تم التسليم",
+        Cancelled: "تم الإلغاء",
+    };
+
+    if (loading) {
+        return (
+            <div className="container py-5">
+                Loading...
+            </div>
+        )
+    }
+
+    if (!order) {
+        return (
+            <div className="container py-5">
+                <div className="text-center">
+                    Order not found :(
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="container py-5">
@@ -207,10 +237,10 @@ function OrderDetails() {
                     <p>
                         <strong>عدد المنتجات:</strong>
                         {
-                        order.items.reduce(
+                        order.items?.reduce(
                             (sum, item) => sum + item.quantity,
                                 0
-                            )
+                            ) || 0
                         }
                     </p>
 
@@ -229,8 +259,8 @@ function OrderDetails() {
                     </h5>
 
                     <div className="mb-3">
-                        <span className={`badge bg-${statusColor[status]} fs-6`}>
-                            {status}
+                        <span className={`badge bg-${statusColor[status] || "secondary"} fs-6`}>
+                            {statusText[status] || status}
                         </span>
                     </div>
 
@@ -241,16 +271,20 @@ function OrderDetails() {
                             setStatus(e.target.value)
                         }
                     >
-                        <option value="قيد المعالجة">
+                        <option value="Pending">
                             قيد المعالجة
                         </option>
 
-                        <option value="تم الشحن">
+                        <option value="Processing">
                             تم الشحن
                         </option>
 
-                        <option value="تم التسليم">
+                        <option value="Delivered">
                             تم التسليم
+                        </option>
+
+                        <option value="Cancelled">
+                            تم الإلغاء
                         </option>
                     </select>
 
@@ -258,8 +292,9 @@ function OrderDetails() {
                         <button
                             className="btn btn-success"
                             onClick={handleSaveStatus}
+                            disabled={saving}
                         >
-                            Save Status
+                            {saving ? "Saving..." : "Save Status"}
                         </button>
 
                         <button
@@ -276,8 +311,9 @@ function OrderDetails() {
                         <button
                             className="btn btn-danger"
                             onClick={handleDelete}
+                            disabled={deleting}
                         >
-                            Delete Order
+                            {deleting ? "Deleting..." : "Delete Order"}
                         </button>
                     </div>
                 </div>
@@ -346,7 +382,7 @@ function OrderDetails() {
                         </thead>
 
                         <tbody>
-                            {selectedOrder.items.map((item) => (
+                            {selectedOrder.items?.map((item) => (
                                 <tr 
                                     key={item.id}>
                                         <td>{item.product_name}</td>

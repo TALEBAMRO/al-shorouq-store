@@ -1,41 +1,43 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
+import customerAxios from "./customerAxios";
 
-const API_URL = "http://localhost:5000/api/orders";
+const API_URL = "/orders";
+
+//Customer
 
 export const createOrder = async (orderData) => {
-    const response = await axios.post(API_URL, orderData);
+    const response = await customerAxios.post(API_URL, orderData);
     return response.data;
 };
 
-export const getOrders = async () => {
-    const response = await axios.get(API_URL);
+export const getOrderByCustomer = async () => {
+    const response = await customerAxios.get(`${API_URL}/customer`);
     return response.data.data;
 };
 
-export const deleteOrder = async (id) => {
-    const response = await axios.delete(`${API_URL}/${id}`);
-    return response.data;
-}
+//Admin
+
+export const getOrders = async () => {
+    const response = await axiosInstance.get(API_URL);
+    return response.data.data;
+};
 
 export const getOrderById = async (id) => {
-    const response = await axios.get(
+    const response = await axiosInstance.get(
         `${API_URL}/${id}`
     );
     return response.data.data;
 };
 
 export const updateOrderStatus = async (id, status) => {
-    const response = await axios.put(
+    const response = await axiosInstance.put(
         `${API_URL}/${id}`, {status}
     );
 
-    return response.data
+    return response.data;
 };
 
-export const getOrderByCustomer = async (email) => {
-    const response = await axios.get(
-        `${API_URL}/customer/${email}`
-    );
-
-    return response.data.data;
+export const deleteOrder = async (id) => {
+    const response = await axiosInstance.delete(`${API_URL}/${id}`);
+    return response.data;
 };

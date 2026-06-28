@@ -1,116 +1,88 @@
-# 🌿 Al-Shorouq Store
+# 🌿 Al-Shorouq Store - Frontend
 
-A modern online fruit and vegetable store built with **React** and **Vite**. The application provides a complete e-commerce experience, including product browsing, shopping cart management, customer authentication, order tracking, invoice generation, and admin order management.
-
----
-
-## 🚀 Features
-
-### 👤 Customer Features
-
-- Browse fruits and vegetables.
-- Search products by name.
-- Filter products by category.
-- View product details.
-- Add products to cart.
-- Update product quantities.
-- Remove products from cart.
-- Automatic total price calculation.
-- Checkout with customer information.
-- Cash on Delivery payment option.
-- Place and save orders.
-- View previous orders.
-- Download invoices as PDF.
-- Profile dashboard.
-- Responsive design.
-- Arabic RTL support.
+A modern React-based frontend for **Al-Shorouq Store**, an online fruit and vegetable shopping platform. The application provides customers with a smooth shopping experience and administrators with a clean management interface.
 
 ---
 
-### 🔑 Authentication
+# 🚀 Features
 
-- Customer Registration.
-- Customer Login.
-- Admin Login.
-- Logout functionality.
-- Protected Routes.
+## 👤 Customer
 
----
-
-### 🛠️ Admin Features
-
-- View all customer orders.
-- View order details.
-- Update order status.
-- Delete orders.
-- Download invoices as PDF.
-
----
-
-### ⚙️ Technical Features
-
-- React + Vite.
-- React Router DOM.
-- Bootstrap 5.
-- Context API for cart management.
-- Local Storage persistence.
-- Reusable Components Architecture.
-- PDF Invoice Generation using jsPDF & html2canvas.
+- User Registration
+- User Login (JWT Authentication)
+- Browse Products
+- Search Products
+- Filter by Category
+- Shopping Cart
+- Quantity Management
+- Checkout
+- View Order History
+- Download PDF Invoice
+- User Profile
+- Responsive Design
+- Arabic RTL Support
 
 ---
 
-## 🛠️ Technologies Used
+## 👨‍💼 Admin
 
-- React
+- Admin Login
+- Dashboard
+- Products Management
+- Add Product
+- Edit Product
+- Delete Product
+- Orders Management
+- Update Order Status
+- Delete Orders
+
+---
+
+# 🛠️ Technologies
+
+- React 19
 - Vite
-- JavaScript (ES6+)
-- Bootstrap 5
 - React Router DOM
+- Bootstrap 5
+- Axios
 - Context API
-- Local Storage
 - jsPDF
 - html2canvas
 
 ---
 
-## 📂 Project Structure
+# 📂 Folder Structure
 
 ```text
 src/
-├── admin/
-├── components/
-├── context/
-├── data/
-├── layouts/
-├── pages/
-├── utils/
+│
+├── admin
+├── components
+├── context
+├── layouts
+├── pages
+├── routes
+├── services
+├── utils
 ├── App.jsx
 └── main.jsx
 ```
 
 ---
 
-## ▶️ Getting Started
-
-Clone the repository:
+# ⚙️ Installation
 
 ```bash
-git clone https://github.com/TALEBAMRO/al-shorouq-store
+git clone https://github.com/TALEBAMRO/al-shorouq-store.git
 ```
-
-Navigate to the project folder:
 
 ```bash
-cd YOUR_REPOSITORY
+cd al-shorouq-store
 ```
-
-Install dependencies:
 
 ```bash
 npm install
 ```
-
-Run the development server:
 
 ```bash
 npm run dev
@@ -118,31 +90,43 @@ npm run dev
 
 ---
 
-## 📸 Screenshots
+# 🔑 Environment Variables
+
+Create a `.env` file.
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+# 📸 Screenshots
 
 Screenshots will be added soon.
 
 ---
 
-## 🔮 Future Improvements
+# 🔮 Future Improvements
 
-- Backend integration with Node.js and MySQL.
-- Online payment gateway integration.
-- Product inventory management.
-- Sales analytics dashboard.
-- Multi-language support.
-- Email order confirmations.
+- Wishlist
+- Product Reviews
+- Coupons
+- Online Payment
+- Dark Mode
+- Notifications
+- PWA Support
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-### Taleb Amro
+**Taleb Amro**
 
 Computer Engineer
 
-Focused on building modern web applications using React, JavaScript, and Full-Stack technologies.
+GitHub:
+https://github.com/TALEBAMRO
 
 ---
 
-⭐ If you like this project, feel free to star the repository.
+⭐ If you like this project, consider giving it a star.

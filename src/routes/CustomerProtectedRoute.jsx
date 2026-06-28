@@ -1,9 +1,10 @@
 import { Navigate } from "react-router-dom";
 
 function CustomerProtectedRoute({ children }) {
-    const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer"));
+    const token = localStorage.getItem("customerToken");
+    const customer = localStorage.getItem("currentCustomer");
 
-    if (!currentCustomer) {
+    if (!token || !customer) {
         return <Navigate to="/login" replace />;
     }
 

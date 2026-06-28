@@ -1,16 +1,17 @@
-import axios from "axios";
+import customerAxios from "./customerAxios";
 
-const API_URL = "http://localhost:5000/api/customers";
+const API_URL = "/customers";
 
 export const registerCustomer = async (customerData) => {
-    const response = await axios.post(
-        `${API_URL}/register`, customerData
+    const response = await customerAxios.post(
+        `${API_URL}/register`, 
+        customerData
     );
     return response.data;
 };
 
 export const loginCustomer = async (email, password) => {
-    const response = await axios.post(
+    const response = await customerAxios.post(
         `${API_URL}/login`,
         {
             email,
@@ -18,5 +19,5 @@ export const loginCustomer = async (email, password) => {
         }
     );
 
-    return response.data.data;
+    return response.data;
 };

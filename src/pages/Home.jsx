@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 function Home() {
     return (
         <>
-        <section className="text-center py-5">
+        <section className="text-center py-5" dir="rtl">
             <div className="container">
                 <h1 className="display-4 fw-bold text-success mb-4 hero-title">
                     🍎🥕🥬خضار وفواكه طازجة يومياً

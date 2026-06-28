@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { adminLogin } from "../services/adminService";
 import { useNavigate, Link } from "react-router-dom";
 
 function AdminLogin() {
@@ -8,18 +9,31 @@ function AdminLogin() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (
-            email === "admin@alshorouq.com" &&
-            password === "123456"
-        ) {
-            localStorage.setItem("isAdmin", "true");
-            navigate("/admin");
-        } else {
-            alert("Invalid email or password.");
+        setLoading(true);
+
+        try {
+            const data = await adminLogin(
+                email.trim(), 
+                password.trim()
+            );
+
+            localStorage.setItem("adminToken", data.token);
+
+            navigate("/admin", {
+                replace: true,
+            });
+        } catch (error) {
+            alert(
+                error.response?.data?.message || "Login failed."
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -141,9 +155,10 @@ function AdminLogin() {
                                 {/* Login Button */}
                                 <button
                                     type="submit"
+                                    disabled={loading}
                                     className="btn btn-success w-100 py-3 fw-semibold"
                                 >
-                                    Login
+                                    {loading ? "Signing In..." : "Login"}
                                 </button>
 
                                 {/* Back Button */}

@@ -10,6 +10,7 @@ function CustomerRegister() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
@@ -20,9 +21,9 @@ function CustomerRegister() {
         setMessage("");
 
         if (
-            !fullName ||
-            !email ||
-            !phone ||
+            !fullName.trim() ||
+            !email.trim() ||
+            !phone.trim() ||
             !password ||
             !confirmPassword
         ) {
@@ -42,6 +43,8 @@ function CustomerRegister() {
             setMessageType("danger");
             return;
         }
+
+        setLoading(true);
 
         try {
             await registerCustomer({
@@ -64,6 +67,8 @@ function CustomerRegister() {
             );
 
             setMessageType("danger");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -183,8 +188,9 @@ function CustomerRegister() {
                                 <button
                                     type="submit"
                                     className="btn btn-success w-100 py-2"
+                                    disabled={loading}
                                 >
-                                    إنشاء الحساب
+                                    {loading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
                                 </button>
 
                                 <div className="text-center mt-4">
@@ -195,7 +201,7 @@ function CustomerRegister() {
                                     <br />
 
                                     <Link
-                                        to="/products"
+                                        to="/login"
                                         className="text-success fw-bold text-decoration-none"
                                     >
                                         تسجيل الدخول

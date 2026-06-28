@@ -1,49 +1,30 @@
-import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     getProductById,
     updateProduct
 } from "../services/productService";
+import { uploadImage } from "../services/uploadService";
 
 function EditProduct() {
     const { id } = useParams();
     const navigate = useNavigate();
+    //States
+    const [loading, setLoading] = useState(true);
 
-    const handleSave = async () => {
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState("");
+    const [category, setCategory] = useState("");
 
-        if (!name || !price || !category) {
-            alert("Please fill all fields");
-            return;
-        }
+    const [stock, setStock] = useState(0);
+    const [description, setDescription] = useState("");
 
-        try {
-            await updateProduct(id, {
-                name,
-                price: Number(price),
-                category,
-                image_url: imageFile,
-                stock: 0,
-                description: ""
-            });
+    const [imageFile, setImageFile] = useState(null);
+    const [preview, setPreview] = useState("");
 
-            alert("Product updated successfully!");
-            navigate("/admin/products");
-        } catch (error) {
-            console.error(error);
-            alert("Failed to update product");
-        }
-    };
-        
+    const [saving, setSaving] = useState(false);
 
-        const [loading, setLoading] = useState(true);
-
-        const [name, setName] = useState("");
-        const [price, setPrice] = useState("");
-        const [category, setCategory] = useState("");
-        const [imageFile, setImageFile] = useState(null);
-        const [preview, setPreview] = useState("");
-
-        useEffect(() => {
+    useEffect(() => {
             const fetchProduct = async () => {
                 try {
                     const product = await getProductById(id);
@@ -51,8 +32,10 @@ function EditProduct() {
                     setName(product.name);
                     setPrice(product.price);
                     setCategory(product.category);
-                    setImageFile(product.image_url || "");
+                    setImageFile(null);
                     setPreview(product.image_url || "");
+                    setStock(product.stock);
+                    setDescription(product.description);
                 } catch (error) {
                     console.error(error);
                 } finally {
@@ -61,8 +44,47 @@ function EditProduct() {
             };
             fetchProduct();
         }, [id]);
+    
+    const handleSave = async () => {
+        if (!name.trim() || !category) {
+            alert("Please fill all fields");
+            return;
+        }
 
-    if(loading) {
+        if (Number(price) <= 0) {
+            alert("Price must be greater than zero");
+            return;
+        }
+
+        setSaving(true);
+
+        try {
+            let imageUrl = preview;
+
+            if (imageFile instanceof File) {
+                imageUrl = await uploadImage(imageFile);
+            }
+
+            await updateProduct(id, {
+                name,
+                price: Number(price),
+                category,
+                image_url: imageUrl,
+                stock,
+                description
+            });
+
+            alert("Product updated successfully!");
+            navigate("/admin/products");
+        } catch (error) {
+            console.error(error);
+            alert("Failed to update product");
+        } finally {
+            setSaving(false);
+        }
+    };
+    //Early Return
+    if (loading) {
         return (
             <div className="container py-5">
                 <h3>Loading...</h3>
@@ -130,11 +152,11 @@ function EditProduct() {
                             accept="image/*"
                             onChange={(e) => {
                                 const file = e.target.files[0];
-                                setImageFile(file);
 
-                                if (file) {
-                                    setPreview(URL.createObjectURL(file));
-                                }
+                                if (!file) return;
+
+                                setImageFile(file);
+                                setPreview(URL.createObjectURL(file));
                             }}
                         />
 
@@ -155,8 +177,9 @@ function EditProduct() {
                     <button 
                         className="btn btn-warning"
                         onClick={handleSave}
+                        disabled={saving}
                     >
-                        Save Changes
+                        {saving ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
             </div>

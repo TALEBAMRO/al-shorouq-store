@@ -3,10 +3,16 @@ import {CartContext} from "../context/cart-context";
 import { Link } from "react-router-dom";
 
 function Cart() {
-    const {cartItems, removeFromCart, increaseQuantity, decreaseQuantity} = useContext(CartContext);
+    const {
+        cartItems, 
+        removeFromCart, 
+        increaseQuantity, 
+        decreaseQuantity
+    } = useContext(CartContext);
 
     const totalPrice = cartItems.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) => 
+            total + (item.price || 0) * item.quantity,
         0    
     );
     return (
@@ -30,7 +36,16 @@ function Cart() {
                                 <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                                     <div className="d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start">
                                         <div className="fs-1 mb-2 mb-md-0">
-                                            {item.image}
+                                            <img
+                                                src={item.image_url}
+                                                alt={item.name}
+                                                className="rounded"
+                                                style={{
+                                                    width: "80px",
+                                                    height: "80px",
+                                                    objectFit: "cover"
+                                                }}
+                                            />
                                         </div>
 
                                         <div>
@@ -86,7 +101,7 @@ function Cart() {
                             المجموع الكلي:
                         </h4>
                         <h4 className="mb-0 text-success fw-bold">
-                            {totalPrice} ₪
+                            {totalPrice.toFixed(2)} ₪
                         </h4>
                     </div>
                     <Link 

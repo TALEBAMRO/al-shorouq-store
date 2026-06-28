@@ -7,31 +7,42 @@ function CustomerLogin() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] =  useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true);
+
         try {
-            const customer = await loginCustomer(
-                email,
+            const data = await loginCustomer(
+                email.trim(),
                 password
             );
+
             localStorage.setItem(
-                "currentCustomer",
-                JSON.stringify(customer)
+                "customerToken",
+                data.token 
             );
 
-            alert(`Welcome back, ${customer.full_name}`);
+            localStorage.setItem(
+                "currentCustomer",
+                JSON.stringify(data.customer)
+            );
+
+            alert(`مرحباً بعودتك ${data.customer.full_name}`);
             navigate("/");
         } catch (error) {
             alert(
                 error.response?.data?.error || "Invalid email or password"
             );
+        } finally {
+            setLoading(false);
         }
     };
 
     return(
-        <div className="container py-5">
+        <div className="container py-5" dir="rtl">
             <div className="row justify-content-center">
                 <div className="col-lg-6">
 
@@ -60,6 +71,7 @@ function CustomerLogin() {
                                         type="email"
                                         className="form-control"
                                         placeholder="Enter your email"
+                                        autoComplete="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
@@ -74,6 +86,7 @@ function CustomerLogin() {
                                         type="password"
                                         className="form-control"
                                         placeholder="Enter your password"
+                                        autoComplete="current-password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
@@ -82,8 +95,10 @@ function CustomerLogin() {
 
                                 <button
                                     type="submit"
-                                    className="btn btn-success w-100 py-2">
-                                        تسجيل الدخول 
+                                    className="btn btn-success w-100 py-2"
+                                    disabled={loading}
+                                >
+                                    {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
                                 </button>
                                     <div className="text-center mt-4">
                                         <span>

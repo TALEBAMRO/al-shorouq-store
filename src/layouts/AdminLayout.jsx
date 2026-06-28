@@ -4,8 +4,11 @@ function AdminLayout() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        localStorage.removeItem("adminToken");
         localStorage.removeItem("isAdmin");
-        navigate("/admin/login");
+        navigate("/admin/login", {
+            replace: true,
+        });
     };
 
     return (
@@ -43,7 +46,6 @@ function AdminLayout() {
                     </div>
                 </div>
             </nav>
-
             <Outlet />
         </>
     );

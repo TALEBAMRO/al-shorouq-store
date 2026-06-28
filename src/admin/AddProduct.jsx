@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../services/productService";
+import { uploadImage } from "../services/uploadService";
 
 function AddProduct() {
 
@@ -11,30 +12,54 @@ const [price, setPrice] = useState("");
 const [category, setCategory] = useState("");
 const [imageFile, setImageFile] = useState(null);
 const [preview, setPreview] = useState("");
+const [loading, setLoading] = useState(false);
 
+useEffect(() => {
+    return() => {
+        if (preview) {
+            URL.revokeObjectURL(preview);
+        }
+    };
+}, [preview]);
 const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    try { 
+    try {
+        if (Number(price) <= 0) {
+        alert("Price must be greater than zero.");
+        return;
+    }
+
+        let imageUrl = "";
+
+        if (imageFile){
+            imageUrl = await uploadImage(imageFile);
+        }
     const newProduct = {
-                    name,
+                    name: name.trim(),
                     price: Number(price),
-                    category,
-                    image_url: imageFile,
+                    category: category.trim(),
+                    image_url: imageUrl,
                     stock: 0,
-                    description: ""
+                    description: "",
     };
-
+    
     await createProduct(newProduct);
 
     alert("Product added successfully!");
-    navigate("/admin/products");
+    navigate("/admin/products", {
+        replace: true,
+    });
 
     } catch (error) {
         console.error(error);
         console.log(error.response?.data);
         alert("Failed to add product");
+    } finally {
+        setLoading(false);
     }
+
 };
     return (
         <div className="container py-5">
@@ -65,6 +90,8 @@ const handleSubmit = async (e) => {
 
                             <input 
                                 type="number"
+                                min="0"
+                                step="0.01"
                                 className="form-control"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
@@ -81,6 +108,10 @@ const handleSubmit = async (e) => {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                                 required >
+                                <option value="">
+                                    اختر التصنيف
+                                </option>
+
                                 <option value="الخضار">
                                     الخضار
                                 </option>
@@ -103,7 +134,7 @@ const handleSubmit = async (e) => {
                             <input 
                                 type="file"
                                 className="form-control"
-                                accept="image/*"
+                                accept=".jpg,.jpeg,.png,.webp,.avif"
                                 onChange={(e) => {
                                     const file = e.target.files[0];
                                     setImageFile(file);
@@ -130,8 +161,9 @@ const handleSubmit = async (e) => {
                         <button 
                             type="submit"
                             className="btn btn-success"
+                            disabled={loading}
                         >
-                            Save Product
+                            {loading ? "Saving..." : "Save Product"}
                         </button>
                     </form>
                 </div>

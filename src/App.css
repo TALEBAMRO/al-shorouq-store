@@ -105,3 +105,12 @@ table {
 .form-control {
   max-width: 100%;
 }
+
+/*profile*/
+.profile-card{
+    transition: .3s ease;
+}
+
+.profile-card:hover{
+    transform: translateY(-6px);
+}

@@ -7,6 +7,7 @@ function Products() {
         const [searchTerm, setSearchTerm] = useState("");
         const [selectedCategory, setSelectedCategory] = useState("الكل");
         const [products, setProducts] = useState([]);
+        const [loading, setLoading] = useState(true);
 
         useEffect(() => {
             const fetchProducts = async () => {
@@ -14,7 +15,10 @@ function Products() {
                     const data = await getProducts();
                     setProducts(data);
                 } catch (error) {
-                    console.error("Error fetching products:", error);
+                    console.error(error);
+                    alert("Failed to load products :(")
+                } finally {
+                    setLoading(false);
                 }
             };
 
@@ -22,9 +26,9 @@ function Products() {
         }, []);
 
         const filteredProducts = products.filter((product) => {
-            const matchesSearch = product.name
-                                        .toLowerCase()
-                                        .includes(searchTerm.toLowerCase());
+            const matchesSearch = (product.name || "")
+                .toLowerCase()
+                .includes(searchTerm.trim().toLowerCase());
 
             const matchesCategory = selectedCategory === "الكل" ||
             product.category === selectedCategory;
@@ -32,6 +36,13 @@ function Products() {
             return matchesSearch && matchesCategory;
         })
 
+        if (loading) {
+            return (
+                <div className="container py-5">
+                    Loading...
+                </div>
+            )
+        }
 
     return (
         <div className="container py-5">

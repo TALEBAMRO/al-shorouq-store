@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-/*import { useNavigate } from "react-router-dom";*/
 import { useState, useEffect } from "react";
 import { getProducts } from "../services/productService";
 import { getOrders } from "../services/orderService";
@@ -7,20 +6,25 @@ import { getOrders } from "../services/orderService";
 function AdminDashboard() {
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const productsData = await getProducts();
-                const ordersData = await getOrders();
+        try {
+            const [productsData, ordersData] = await Promise.all([
+                getProducts(),
+                getOrders(),
+            ]);
 
-                setProducts(productsData);
-                setOrders(ordersData);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
+            setProducts(productsData);
+            setOrders(ordersData);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
         fetchData();
     }, []);
     
@@ -48,6 +52,14 @@ function AdminDashboard() {
             Delivered: "تم التسليم",
             Cancelled: "تم الإلغاء",
         };
+
+        if (loading) {
+            return (
+                <div className="container py-5 text-center">
+                Loading...
+                </div>
+            );
+        }
 
     return (
         <div className="container py-5">

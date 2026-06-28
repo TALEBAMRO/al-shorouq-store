@@ -3,11 +3,13 @@ import { downloadInvoice } from "../utils/invoiceGenerator";
 import { getOrderByCustomer } from "../services/orderService";
 
 function Orders() {
-    const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer")) || [];
+    const currentCustomer = JSON.parse(localStorage.getItem("currentCustomer")) || null;
 
-    const invoiceRef = useRef();
+    const invoiceRef = useRef(null);
+
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -19,6 +21,9 @@ function Orders() {
                 setOrders(data);
             } catch (error) {
                 console.error(error);
+                alert("Failed to load orders :(")
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -26,6 +31,28 @@ function Orders() {
             fetchOrders();
         }
     }, [currentCustomer?.email]);
+
+    const statusColor = {
+        Pending: "warning",
+        Processing: "primary",
+        Delivered: "success",
+        Cancelled: "danger",
+    };
+
+    const statusText = {
+        Pending: "قيد المعالجة",
+        Processing: "تم الشحن",
+        Delivered: "تم التسليم",
+        Cancelled: "تم الالغاء",
+    };
+
+    if (loading) {
+        return (
+            <div className="container py-5">
+                Loading...
+            </div>
+        )
+    }
 
     return (
         <div className="container py-5">
@@ -58,7 +85,7 @@ function Orders() {
                                     </div>
 
                                     <h5 className="text-success fw-bold mb-0">
-                                        {order.total_price} ₪
+                                        {Number(order.total_price).toFixed(2)} ₪
                                     </h5>
                                 </div>
                                 <hr />
@@ -84,8 +111,8 @@ function Orders() {
 
                                 <p>
                                     <strong>حالة الطلب:</strong>{" "}
-                                    <span className="badge bg-warning text-dark">
-                                        {order.status}
+                                    <span className={`badge bg-${statusColor[order.status] || "secondary"}`}>
+                                        {statusText[order.status] || order.status}
                                     </span>
                                 </p>
 
@@ -96,7 +123,7 @@ function Orders() {
                                 </h6>
 
                                 <div className="d-flex flex-column gap-2">
-                                {order.items.map((item) => (
+                                {order.items?.map((item) => (
                                     <div 
                                         key={item.id}
                                         className="bg-light rounded p-2 d-flex justify-content-between align-items-center"
@@ -205,23 +232,3 @@ function Orders() {
 }
 
 export default Orders;
-
-/* <div className="d-flex flex-column gap-2">
-                                {order.items.map((item) => (
-                                    <div 
-                                        key={item.id}
-                                        className="bg-light rounded p-2 d-flex justify-content-between align-items-center"
-                                    >
-                                        <span>{item.image} {item.name}</span>
-                                        <span className="badge bg-success">× {item.quantity}</span>
-                                    </div>
-                                ))}
-                                </div>
-                                
-                                {selectedOrder.items.map((item) => (
-                                <tr 
-                                    key={item.id}>
-                                        <td>{item.name}</td>
-                                        <td>{item.quantity}</td>
-                                    </tr>
-                            ))}*/

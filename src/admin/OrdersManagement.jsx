@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 function OrdersManagement() {
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -12,6 +13,9 @@ function OrdersManagement() {
                 setOrders(data);
             } catch (error) {
                 console.error(error);
+                alert("Failed to load orders.");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -28,10 +32,8 @@ function OrdersManagement() {
         try{
             await deleteOrder(id);
 
-            setOrders(
-                orders.filter(
-                    (order) => order.id !== id
-                )
+            setOrders((prevOrders) =>
+                prevOrders.filter((order) => order.id !== id)
             );
         } catch (error) {
             console.error(error);
@@ -51,6 +53,14 @@ function OrdersManagement() {
     Delivered: "تم التسليم",
     Cancelled: "تم الإلغاء",
 };
+
+if (loading) {
+    return (
+        <div className="container py-5">
+            Loading...
+        </div>
+    );
+}
 
     return (
         <div className="container py-5">
@@ -92,9 +102,9 @@ function OrdersManagement() {
 
                                     <td>
                                         <span
-                                            className={`badge bg-${statusColor[order.status]} fs-6`}
+                                            className={`badge bg-${statusColor[order.status] || "secondary"} fs-6`}
                                         >
-                                            {statusText[order.status]}
+                                            {statusText[order.status] || order.status}
                                         </span>
                                     </td>
 

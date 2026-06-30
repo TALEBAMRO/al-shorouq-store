@@ -6,7 +6,7 @@ function Home() {
         <section className="text-center py-5" dir="rtl">
             <div className="container">
                 <h1 className="display-4 fw-bold text-success mb-4 hero-title">
-                    🍎🥕🥬خضار وفواكه طازجة يومياً
+                    خضار وفواكه طازجة يومياً🥕🥬
                 </h1>
 
                 <p className="lead text-muted mb-5">
